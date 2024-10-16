@@ -71,7 +71,17 @@
 			{#if structure.ref_structure && structure.comp_structure}
 				{#each structure.ref_structure.structure as structure_item, j}
 					<tr style="max-width: 600px">
-						<td>{structure_item.name}</td>
+						<td>
+							{structure_item.name}
+							<div class="tooltip-container">
+								<i style="cursor: pointer;">&#9432;</i>
+								{#if structure_item.description}
+									<span class="tooltip-text">{structure_item.description}</span>
+								{:else}
+									<span class="tooltip-text">No description available</span>
+								{/if}
+							</div>
+						</td>
 						<td style="max-width: inherit; word-wrap:break-word">{structure_item.value}</td>
 						{#if structure.structure_differences[j]}
 							<td class="diff-background" style="max-width: inherit; word-wrap:break-word">
@@ -122,7 +132,17 @@
 									{#if substructure.ref_structure && substructure.comp_structure}
 										{#each substructure.ref_structure.structure as structure_item, j}
 											<tr>
-												<td>{structure_item.name}</td>
+												<td>
+													{structure_item.name}
+													<div class="tooltip-container">
+														<i style="cursor: pointer;">&#9432;</i>
+														{#if structure_item.description}
+															<span class="tooltip-text">{structure_item.description}</span>
+														{:else}
+															<span class="tooltip-text">No description available</span>
+														{/if}
+													</div>
+												</td>
 												<td>{structure_item.value}</td>
 												<td>{substructure.comp_structure.structure[j].value}</td>
 											</tr>
@@ -131,6 +151,17 @@
 										{#each substructure.ref_structure.structure as structure_item, j}
 											<tr>
 												<td>{structure_item.name}</td>
+												<td>
+													{structure_item.name}
+													<div class="tooltip-container">
+														<i style="cursor: pointer;">&#9432;</i>
+														{#if structure_item.description}
+															<span class="tooltip-text">{structure_item.description}</span>
+														{:else}
+															<span class="tooltip-text">No description available</span>
+														{/if}
+													</div>
+												</td>
 												<td>{structure_item.value}</td>
 												<td class="grey-diagonal-background"></td>
 											</tr>
@@ -138,7 +169,17 @@
 									{:else if substructure.comp_structure}
 										{#each substructure.comp_structure.structure as structure_item, j}
 											<tr>
-												<td>{structure_item.name}</td>
+												<td>
+													{structure_item.name}
+													<div class="tooltip-container">
+														<i style="cursor: pointer;">&#9432;</i>
+														{#if structure_item.description}
+															<span class="tooltip-text">{structure_item.description}</span>
+														{:else}
+															<span class="tooltip-text">No description available</span>
+														{/if}
+													</div>
+												</td>
 												<td class="grey-diagonal-background"></td>
 												<td>{structure_item.value}</td>
 											</tr>
@@ -190,5 +231,32 @@
 	}
 	.even {
 		width: 33%;
+	}
+
+	.tooltip-container {
+		position: relative;
+		display: inline-block;
+	}
+
+	.tooltip-text {
+		visibility: hidden;
+		width: 200px;
+		background-color: #333;
+		color: #fff;
+		text-align: center;
+		border-radius: 5px;
+		padding: 5px;
+		position: absolute;
+		z-index: 1;
+		bottom: 125%; /* Position the tooltip above the text */
+		left: 150%;
+		margin-left: -100px; /* Center the tooltip */
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+
+	.tooltip-container:hover .tooltip-text {
+		visibility: visible;
+		opacity: 1;
 	}
 </style>
