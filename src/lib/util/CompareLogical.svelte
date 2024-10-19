@@ -106,12 +106,16 @@
 							>
 								<thead>
 									<tr class="table-section-header" on:click={() => toggleSection(i, j)}>
-										{#if substructure.ref_structure}
-											<th class="even" colspan="1">{substructure.ref_structure.name}</th>
-										{:else if substructure.comp_structure}
-											<th class="even" colspan="1">{substructure.comp_structure.name}</th>
-										{/if}
-										<!-- maybe only show _file_1_value when it is expanded -->
+										<th class="even" colspan="1">
+											{#if substructure.ref_structure}
+												{substructure.ref_structure.name}
+											{:else if substructure.comp_structure}
+												{substructure.comp_structure.name}
+											{/if}
+											{#if substructure.structure_differences.length > 0}
+												<span class="blue-dot"></span>
+											{/if}
+										</th>
 										{#if substructure.ref_structure && !substructure.comp_structure}
 											<th class="even" colspan="1"></th>
 											<th class="even" colspan="1">{ref_file_name} value</th>
@@ -144,7 +148,13 @@
 													</div>
 												</td>
 												<td>{structure_item.value}</td>
-												<td>{substructure.comp_structure.structure[j].value}</td>
+												{#if substructure.structure_differences[j]}
+													<td class="diff-background"
+														>{substructure.comp_structure.structure[j].value}</td
+													>
+												{:else}
+													<td>{substructure.comp_structure.structure[j].value}</td>
+												{/if}
 											</tr>
 										{/each}
 									{:else if substructure.ref_structure}
@@ -258,5 +268,14 @@
 	.tooltip-container:hover .tooltip-text {
 		visibility: visible;
 		opacity: 1;
+	}
+
+	.blue-dot {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		background-color: red;
+		border-radius: 50%;
+		margin-left: 5px;
 	}
 </style>
