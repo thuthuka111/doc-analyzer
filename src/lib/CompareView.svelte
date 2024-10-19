@@ -19,7 +19,7 @@
 
 		const compare_logical_data_res: string = await invoke('get_compare_logical_view');
 		compare_logical_data = JSON.parse(compare_logical_data_res);
-		// console.log(compare_logical_data);
+		console.log(compare_logical_data);
 	}
 
 	async function getFileData() {
@@ -72,7 +72,7 @@
 	{#if comparing_logical}
 		<CompareLogical data={compare_logical_data} ref_file_name={file_name} {compare_file_name} />
 	{:else}
-		<ComparePhysical data={compare_physical_data} />
+		<ComparePhysical data={compare_physical_data} ref_file_name={file_name} {compare_file_name} />
 	{/if}
 </div>
 

@@ -4,6 +4,8 @@
 	import { invoke } from '@tauri-apps/api';
 
 	export let data: ComparisonPhysicalStructure[] = [];
+	export let ref_file_name: string;
+	export let compare_file_name: string;
 	let interpret_utf8 = false;
 	let collapse_arr: boolean[] = [true, false];
 	let utf8_interpretations: [string, string][] = [];
@@ -145,17 +147,39 @@
 					colspan="2"
 					style="text-align: center; align-content: center; color: white; padding: 0.3rem;"
 				>
-					{ref_structure.start_index}<sup>{ordinal_suffix_of(ref_structure.start_index)}</sup> - {ref_structure.end_index}<sup
-					>
-						{ordinal_suffix_of(ref_structure.end_index)}
-					</sup>
-					byte in <sub>in <em>{ref_structure.stream_name}</em></sub>
-					{#if ref_structure.structure_name}({ref_structure.structure_name})
-					{/if}
+					<div class="d-flex justify-content-center align-items-center">
+						{#if ref_structure.structure_name && ref_structure.description}
+							{ref_structure.structure_name} - <em>{ref_structure.description}</em>
+						{:else}
+							{#if ref_structure.structure_name}
+								{ref_structure.structure_name}
+							{/if}
+							{#if ref_structure.description}
+								<em>{ref_structure.description}</em>
+							{/if}
+						{/if}
+						{#if comparison_structure.difference_indices.length > 0}
+							<span class="blue-dot"></span>
+						{/if}
+					</div>
 				</th>
 			</tr>
 		</thead>
 		<tbody id="section2" class="table-section-content" class:show={collapse_arr[i]}>
+			<tr>
+				<td class="text-center p-0">
+					{ref_structure.start_index}<sup>{ordinal_suffix_of(ref_structure.start_index)}</sup> - {ref_structure.end_index}<sup
+						>{ordinal_suffix_of(ref_structure.end_index)}</sup
+					>
+					byte in <sub>in <em>{ref_structure.stream_name}</em></sub> | <em>{ref_file_name}</em>
+				</td>
+				<td class="text-center p-0">
+					{comp_structure.start_index}<sup>{ordinal_suffix_of(comp_structure.start_index)}</sup> - {comp_structure.end_index}<sup
+						>{ordinal_suffix_of(comp_structure.end_index)}</sup
+					>
+					byte in <sub>in <em>{comp_structure.stream_name}</em></sub> | <em>{compare_file_name}</em>
+				</td>
+			</tr>
 			<!-- <tbody id="section2" class="table-section-content" class:show={i == 0 ? true : false}> -->
 			<tr class="p-1">
 				{#if interpret_utf8}
@@ -236,5 +260,13 @@
 		word-wrap: break-word;
 		overflow-wrap: break-word;
 		white-space: normal;
+	}
+	.blue-dot {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		background-color: red;
+		border-radius: 50%;
+		margin-left: 5px;
 	}
 </style>

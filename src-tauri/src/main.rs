@@ -3,11 +3,7 @@
 
 use doc_anal::decoder::WordDocument;
 use json::{object, JsonValue};
-use std::{
-    fs::File,
-    path::{Path, PathBuf},
-    sync::Mutex,
-};
+use std::{fs::File, path::PathBuf, sync::Mutex};
 use tauri::{Manager, State};
 use util::save_recent_open;
 
