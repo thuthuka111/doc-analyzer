@@ -10,7 +10,7 @@
 	let file_name: string;
 	let compare_file_name: string;
 	let recent_files: { path: string; name: string }[] = [];
-	let comparing_logical: boolean = false;
+	let comparing_logical: boolean = true;
 
 	async function getDisplayData() {
 		const compare_physical_data_res: string = await invoke('get_compare_physical_view');
@@ -38,6 +38,12 @@
 	}
 
 	onMount(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const compareParam = urlParams.get('compare');
+		if (compareParam) {
+			comparing_logical = compareParam === 'logical';
+		}
+
 		getFileData();
 		getDisplayData();
 		getRecentlyOpened();

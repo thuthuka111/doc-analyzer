@@ -58,7 +58,7 @@
 
 		// Here decode and save the view before going to the next page
 		await invoke('read_comparison_file', { filePath: path });
-		goto('compare');
+		goto(`compare?compare=${viewing_logical ? 'logical' : 'physical'}`);
 	}
 
 	onMount(() => {
