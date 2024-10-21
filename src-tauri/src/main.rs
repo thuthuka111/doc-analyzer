@@ -185,7 +185,7 @@ fn get_compare_logical_view(state: State<'_, Mutex<AppState>>) -> Result<String,
 fn get_utf8_interpreted_bytes(
     word_doc: String,
     state: State<'_, Mutex<AppState>>,
-) -> Result<Vec<String>, String> {
+) -> Result<Vec<Vec<String>>, String> {
     let state = state.lock().unwrap();
     let word_doc = if word_doc == "analysis" {
         state.word_doc.as_ref().unwrap()
@@ -351,30 +351,21 @@ mod util {
         path
     }
 
-    pub fn bytes_to_utf8_or_bullet(bytes: &Vec<u8>) -> String {
-        bytes
-            .iter()
-            .map(|b| match std::str::from_utf8(&[*b]) {
-                Ok(s) => s.to_string(),
-                Err(_) => "•".to_string(),
-            })
-            .collect::<String>()
-    }
+    pub fn bytes_to_utf8_or_bullet(bytes: &Vec<u8>) -> Vec<String> {
+        let mut output = Vec::new();
 
-    pub fn _bytes_to_ascii_or_bullet(bytes: &Vec<u8>) -> String {
-        bytes
-            .iter()
-            .map(|&b| match std::str::from_utf8(&[b]) {
-                Ok(s) => {
-                    let c = s.chars().next().unwrap();
-                    if c.is_alphanumeric() || c.is_ascii_punctuation() {
-                        s.to_string()
-                    } else {
-                        "•".to_string()
-                    }
-                }
-                Err(_) => "•".to_string(),
-            })
-            .collect::<String>()
+        for byte in bytes {
+            let c = char::from(*byte);
+
+            if c.is_alphanumeric() || c.is_ascii_punctuation() {
+                output.push(c.to_string());
+            // } else if c.is_control() {
+            //     output.push(format!("{}", c.escape_debug()));
+            } else {
+                output.push("•".to_string());
+            }
+        }
+
+        output
     }
 }

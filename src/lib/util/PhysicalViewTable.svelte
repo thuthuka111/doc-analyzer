@@ -6,77 +6,81 @@
 	export let data: PhysicalStructure[] = [];
 	let collapse_arr: boolean[] = [true, false];
 	let interpret_utf8 = false;
-	let utf8_interpretations: string[] = [];
+	let utf8_interpretations: string[][] = [];
 
 	$: collapse_arr = Array(data.length).fill(false);
 	$: if (data.length > 0) {
-        set_utf8_interpretation();
-    }
-
+		set_utf8_interpretation();
+	}
 
 	function toggleSection(i: number) {
 		collapse_arr[i] = !collapse_arr[i];
 	}
 
 	async function set_utf8_interpretation() {
-		let interpretations_res: string[] = await invoke('get_utf8_interpreted_bytes', {
+		let interpretations_res: string[][] = await invoke('get_utf8_interpreted_bytes', {
 			wordDoc: 'analysis'
 		});
 		console.log(interpretations_res);
 		utf8_interpretations = interpretations_res;
 	}
-
 </script>
 
 <!-- <div class=""> -->
-	<label class="ml-5">
-		<input
-			type="checkbox"
-			bind:checked={interpret_utf8}
-			id="interpret-utf8"
-			class="form-check form-check-input"
-		/>
-		Interpret bytes as UTF-8
-	</label>
+<label class="ml-5">
+	<input
+		type="checkbox"
+		bind:checked={interpret_utf8}
+		id="interpret-utf8"
+		class="form-check form-check-input"
+	/>
+	Interpret bytes as ASCII
+</label>
 
-	<table class="table table-bordered" style="width: 100%; table-layout: fixed;">
-		{#each data as structure, i}
-			<thead>
-				<tr class="table-section-header" on:click={() => toggleSection(i)}>
-					<th
-						colspan="3"
-						style="text-align: center; align-content: center; color: white; padding: 0.3rem;"
+<table class="table table-bordered" style="width: 100%; table-layout: fixed;">
+	{#each data as structure, i}
+		<thead>
+			<tr class="table-section-header" on:click={() => toggleSection(i)}>
+				<th
+					colspan="3"
+					style="text-align: center; align-content: center; color: white; padding: 0.3rem;"
+				>
+					{structure.start_index}<sup>{ordinal_suffix_of(structure.start_index)}</sup> - {structure.end_index}<sup
+						>{ordinal_suffix_of(structure.end_index)}</sup
 					>
-						{structure.start_index}<sup>{ordinal_suffix_of(structure.start_index)}</sup> - {structure.end_index}<sup
-							>{ordinal_suffix_of(structure.end_index)}</sup
-						>
-						byte in <sub>in <em>{structure.stream_name}</em></sub>
-						{#if structure.structure_name}({structure.structure_name})
-						{/if}
-					</th>
-				</tr>
-			</thead>
-			<tbody id="section2" class="table-section-content" class:show={collapse_arr[i]}>
-				<tr class="p-1">
-					{#if structure.description}
-						{#if !interpret_utf8}
-							<td colspan="2" class="hex-text" style="letter-spacing: 0.1rem;">{structure.bytes}</td
-							>
-						{:else}
-							<td colspan="2" class="hex-text" style="letter-spacing: 0.1rem;">
-								{utf8_interpretations[i]}
-							</td>
-						{/if}
-						<th colspan="1" style="font-size: small; font-weight: 400; padding: 0.2rem">
-							{structure.description}
-						</th>
-					{:else}
-						<td colspan="3" class="hex-text" style="letter-spacing: 0.1rem;">{structure.bytes}</td>
+					byte in <sub>in <em>{structure.stream_name}</em></sub>
+					{#if structure.structure_name}({structure.structure_name})
 					{/if}
-				</tr>
-			</tbody>
-		{/each}
-	</table>
+				</th>
+			</tr>
+		</thead>
+		<tbody id="section2" class="table-section-content" class:show={collapse_arr[i]}>
+			<tr class="p-1">
+				{#if structure.description}
+					{#if !interpret_utf8}
+						<td colspan="2" class="hex-text" style="letter-spacing: 0.1rem;">{structure.bytes}</td>
+					{:else}
+						<td colspan="2" class="hex-text">
+							<div class="d-flex flex-wrap" style="gap: 3px;">
+								{#each utf8_interpretations[i] as char}
+									<div class="text-center" style="width: 20px;">
+										{char}
+									</div>
+								{/each}
+							</div>
+						</td>
+					{/if}
+					<th colspan="1" style="font-size: small; font-weight: 400; padding: 0.2rem">
+						{structure.description}
+					</th>
+				{:else}
+					<td colspan="3" class="hex-text" style="letter-spacing: 0.1rem;">{structure.bytes}</td>
+				{/if}
+			</tr>
+		</tbody>
+	{/each}
+</table>
+
 <!-- </div> -->
 
 <style>
