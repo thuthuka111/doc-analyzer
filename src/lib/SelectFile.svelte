@@ -72,8 +72,8 @@
 
 <div class="d-flex w-100 justify-content-center align-items-center" style="height: 100vh">
 	<div class="d-flex justify-content-center align-items-center" style="flex-basis: 63%;">
-		<div>
-			<p>Select File/s to analyse</p>
+		<div class="d-flex flex-column">
+			<p>Select file/s to analyse</p>
 			<button on:click={browseFiles} class="btn btn-success">Browse</button>
 		</div>
 	</div>
