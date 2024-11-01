@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { invoke } from '@tauri-apps/api';
+	import { invoke } from '@tauri-apps/api/core';
 	import { onMount } from 'svelte';
-	import { open } from '@tauri-apps/api/dialog';
 	import ComparePhysical from './util/ComparePhysical.svelte';
 	import CompareLogical from './util/CompareLogical.svelte';
 

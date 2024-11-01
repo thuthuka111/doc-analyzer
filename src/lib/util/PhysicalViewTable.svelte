@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ordinal_suffix_of } from '$lib/common';
 	import type { PhysicalStructure } from '$types/PhysicalStructure';
-	import { invoke } from '@tauri-apps/api';
+	import { invoke } from '@tauri-apps/api/core';
 
 	export let data: PhysicalStructure[] = [];
 	let collapse_arr: boolean[] = [true, false];

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ordinal_suffix_of } from '$lib/common';
 	import type { ComparisonPhysicalStructure } from '$types/ComparisonPhysicalStructure';
-	import { invoke } from '@tauri-apps/api';
+	import { invoke } from '@tauri-apps/api/core';
 
 	export let data: ComparisonPhysicalStructure[] = [];
 	export let ref_file_name: string;
